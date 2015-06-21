@@ -1,34 +1,31 @@
 #include <bits/stdc++.h>
-using namespace std;
-#define INF 0x3f3f3f3f
-#define INFL 0x3f3f3f3f3f3f3f3fLL
-#define rep(i, a, b) for(int i = (a); i < int(b); ++i)
-#define rrep(i, a, b) for(int i = (a) - 1; i >= int(b); --i)
-#define what_is(x) cerr << #x << " is " << x << endl;
-typedef long long ll;
-typedef pair<int, int> pii;
-typedef vector<int> vi;
-typedef vector<pii> vpii;
 
-int N;
-vector<int> v;
+using namespace std;
+
+char s[111], t[111];
+int f[26], ff[26];
+bool autom = false, arr = false;
 
 int main() {
-    cin >> N;
-    string n = static_cast<ostringstream*>( &(ostringstream() << N) )->str();
-    for(int i = 0; i < 9; i++) {
-	int q = 0;
-	for(int j = 0; j < n.size(); j++) {
-	    q *= 10;
-	    if(n[j] > '0' + i)
-		q++;
-	}
-	if(q > 0)
-	    v.push_back(q);
+  cin >> s >> t;
+  for (int i = 0; s[i]; i++)
+    f[s[i] - 'a']++;
+  for (int i = 0; t[i]; i++)
+    ff[t[i] - 'a']++;
+  for (int i = 0; t[i]; i++)
+    if (ff[t[i] - 'a'] > f[t[i] - 'a']) {
+      cout << "need tree" << endl;
+      return 0;
     }
-    cout << *max_element(n.begin(), n.end()) << endl;
-    for(auto i : v)
-	cout << i << " ";
-    cout << endl;
+  char nn[111];
+  int k = 0;
+  for (int i = 0; s[i]; i++)
+    if (ff[s[i] - 'a'] > 0)
+      nn[k++] = s[i], ff[s[i] - 'a']--;
+    else autom = true;
+  nn[k] = '\0';
+  if (strcmp(nn, t)) arr = true;
+  if (arr && autom) cout << "both" << endl;
+  else if (arr && !autom) cout << "array" << endl;
+  else cout << "automaton" << endl;
 }
-
